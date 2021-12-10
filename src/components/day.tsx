@@ -5,7 +5,7 @@ import { Block, InlineBlock, Col, Row } from "jsxstyle/preact";
 
 const inputs = {
   1: import("../days/1/input.txt"),
-  // 2: import("../days/2/input.txt"),
+  2: import("../days/2/input.txt"),
   // 3: import("../days/3/input.txt"),
   // 4: import("../days/4/input.txt"),
   // 5: import("../days/5/input.txt"),
@@ -21,8 +21,8 @@ const inputs = {
 const workers = {
   "1.1": new Worker("../days/1/part1.ts"),
   "1.2": new Worker("../days/1/part2.ts"),
-  // "2.1": new Worker("../days/2/part1.ts"),
-  // "2.2": new Worker("../days/2/part2.ts"),
+  "2.1": new Worker("../days/2/part1.ts"),
+  "2.2": new Worker("../days/2/part2.ts"),
   // "3.1": new Worker("../days/3/part1.ts"),
   // "3.2": new Worker("../days/3/part2.ts"),
   // "4.1": new Worker("../days/4/part1.ts"),
