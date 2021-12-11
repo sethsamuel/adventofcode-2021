@@ -3,46 +3,37 @@ import { h } from "preact";
 import { useState } from "preact/hooks";
 import { Block, InlineBlock, Col, Row } from "jsxstyle/preact";
 
-const inputs = {
-  1: import("../days/1/input.txt"),
-  2: import("../days/2/input.txt"),
-  // 3: import("../days/3/input.txt"),
-  // 4: import("../days/4/input.txt"),
-  // 5: import("../days/5/input.txt"),
-  // 6: import("../days/6/input.txt"),
-  // 7: import("../days/7/input.txt"),
-  // 8: import("../days/8/input.txt"),
-  // 9: import("../days/9/input.txt"),
-  // 10: import("../days/10/input.txt"),
-  // 11: import("../days/11/input.txt"),
-  // 12: import("../days/12/input.txt"),
-};
+// import input1 from "bundle-text:../days/1/input.txt";
+const inputs = {};
+import("bundle-text:../days/1/input.txt").then((v) => (inputs[1] = v));
+import("bundle-text:../days/2/input.txt").then((v) => (inputs[2] = v));
+import("bundle-text:../days/3/input.txt").then((v) => (inputs[3] = v));
 
 const workers = {
-  "1.1": new Worker("../days/1/part1.ts"),
-  "1.2": new Worker("../days/1/part2.ts"),
-  "2.1": new Worker("../days/2/part1.ts"),
-  "2.2": new Worker("../days/2/part2.ts"),
-  // "3.1": new Worker("../days/3/part1.ts"),
-  // "3.2": new Worker("../days/3/part2.ts"),
-  // "4.1": new Worker("../days/4/part1.ts"),
-  // "4.2": new Worker("../days/4/part2.ts"),
-  // "5.1": new Worker("../days/5/part1.ts"),
-  // "5.2": new Worker("../days/5/part2.ts"),
-  // "6.1": new Worker("../days/6/part1.ts"),
-  // "6.2": new Worker("../days/6/part2.ts"),
-  // "7.1": new Worker("../days/7/part1.ts"),
-  // "7.2": new Worker("../days/7/part2.ts"),
-  // "8.1": new Worker("../days/8/part1.ts"),
-  // "8.2": new Worker("../days/8/part2.ts"),
-  // "9.1": new Worker("../days/9/part1.ts"),
-  // "9.2": new Worker("../days/9/part2.ts"),
-  // "10.1": new Worker("../days/10/part1.ts"),
-  // "10.2": new Worker("../days/10/part2.ts"),
-  // "11.1": new Worker("../days/11/part1.ts"),
-  // "11.2": new Worker("../days/11/part2.ts"),
-  // "12.1": new Worker("../days/12/part1.ts"),
-  // "12.2": new Worker("../days/12/part2.ts"),
+  "1.1": new Worker(new URL("../days/1/part1.ts", import.meta.url)),
+  "1.2": new Worker(new URL("../days/1/part2.ts", import.meta.url)),
+  "2.1": new Worker(new URL("../days/2/part1.ts", import.meta.url)),
+  "2.2": new Worker(new URL("../days/2/part2.ts", import.meta.url)),
+  "3.1": new Worker(new URL("../days/3/part1.ts", import.meta.url)),
+  "3.2": new Worker(new URL("../days/3/part2.ts", import.meta.url)),
+  // "4.1": new Worker(new URL("../days/4/part1.ts", import.meta.url)),
+  // "4.2": new Worker(new URL("../days/4/part2.ts", import.meta.url)),
+  // "5.1": new Worker(new URL("../days/5/part1.ts", import.meta.url)),
+  // "5.2": new Worker(new URL("../days/5/part2.ts", import.meta.url)),
+  // "6.1": new Worker(new URL("../days/6/part1.ts", import.meta.url)),
+  // "6.2": new Worker(new URL("../days/6/part2.ts", import.meta.url)),
+  // "7.1": new Worker(new URL("../days/7/part1.ts", import.meta.url)),
+  // "7.2": new Worker(new URL("../days/7/part2.ts", import.meta.url)),
+  // "8.1": new Worker(new URL("../days/8/part1.ts", import.meta.url)),
+  // "8.2": new Worker(new URL("../days/8/part2.ts", import.meta.url)),
+  // "9.1": new Worker(new URL("../days/9/part1.ts", import.meta.url)),
+  // "9.2": new Worker(new URL("../days/9/part2.ts", import.meta.url)),
+  // "10.1": new Worker(new URL("../days/10/part1.ts", import.meta.url)),
+  // "10.2": new Worker(new URL("../days/10/part2.ts", import.meta.url)),
+  // "11.1": new Worker(new URL("../days/11/part1.ts", import.meta.url)),
+  // "11.2": new Worker(new URL("../days/11/part2.ts", import.meta.url)),
+  // "12.1": new Worker(new URL("../days/12/part1.ts", import.meta.url)),
+  // "12.2": new Worker(new URL("../days/12/part2.ts", import.meta.url)),
 };
 const Day = ({ day }) => {
   const [progress, setProgress] = useState(0);
@@ -57,10 +48,10 @@ const Day = ({ day }) => {
     setIsRunning(true);
     setResult(null);
     const worker = workers[`${day}.${part}`];
-    // const worker = new Worker(`../days/${day}/part${part}.js`);
+    // const worker = new Worker(new URL(`../days/${day}/part${part}.js`, import.meta.url));
     // const worker = (() => {
     //   if (day === "1" && part === "1") {
-    //     return new Worker("../days/1/part1.js");
+    //     return new Worker(new URL("../days/1/part1.js", import.meta.url));
     //   }
     // })();
     worker.onmessage = (e) => {
@@ -78,7 +69,7 @@ const Day = ({ day }) => {
       }
     };
 
-    const input = (await inputs[day]).default;
+    const input = await inputs[day];
     worker.postMessage({ command: "START", input });
   };
 
